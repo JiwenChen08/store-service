@@ -1,0 +1,6 @@
+services:
+  store-service:
+    build: .
+    container_name: store-service
+    ports:
+      - "8080:8080"
