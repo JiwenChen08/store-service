@@ -42,7 +42,7 @@ on:
 env:
   PROJECT_ID: 'winged-app-477017-r9' # TODO: update to your Google Cloud project ID
   GAR_LOCATION: 'us-central1' # TODO: update to your region
-  GKE_CLUSTER: 'cluster-1' # TODO: update to your cluster name
+  GKE_CLUSTER: 'autopilot-cluster-2' # TODO: update to your cluster name
   GKE_ZONE: 'us-central1-c' # TODO: update to your cluster zone
   DEPLOYMENT_NAME: 'deployment-1' # TODO: update to your deployment name
   REPOSITORY: 'quicklunch' # TODO: update to your Artifact Registry docker repository name
