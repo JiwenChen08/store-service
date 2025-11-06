@@ -37,6 +37,7 @@ on:
   push:
     branches:
       - '"master"'
+  workflow_dispatch:
 
 env:
   PROJECT_ID: 'winged-app-477017-r9' # TODO: update to your Google Cloud project ID
