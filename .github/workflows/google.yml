@@ -48,7 +48,7 @@ env:
   REPOSITORY: 'quicklunch' # TODO: update to your Artifact Registry docker repository name
   IMAGE: 'store-service-dev' # TODO: update to your image name
   WORKLOAD_IDENTITY_PROVIDER: 'projects/803629722393/locations/global/workloadIdentityPools/quicklunch-dev/providers/github-actions-provider' # TODO: update to your workload identity provider
-  SERVICE_ACCOUNT: '803629722393-compute@developer.gserviceaccount.com'
+  SERVICE_ACCOUNT: 'github@winged-app-477017-r9.iam.gserviceaccount.com'
   
 jobs:
   setup-build-publish-deploy:
