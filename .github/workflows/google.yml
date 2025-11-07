@@ -14,8 +14,8 @@
 #    https://support.google.com/googleapi/answer/6158841.
 #
 # 2. Ensure that your repository contains the necessary configuration for your
-#    Google Kubernetes Engine cluster, including deployment.yml,
-#    kustomization.yml, service.yml, etc.
+#    Google Kubernetes Engine cluster, including deployment.yaml,
+#    kustomization.yaml, service.yml, etc.
 #
 # 3. Create and configure a Workload Identity Provider for GitHub:
 #    https://github.com/google-github-actions/auth#preferred-direct-workload-identity-federation.
@@ -110,6 +110,7 @@ jobs:
       # Set up kustomize
       - name: 'Set up Kustomize'
         run: |-
+          cd ./k8s
           curl -sfLo kustomize.tar.gz https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.7.1/kustomize_v5.7.1_linux_amd64.tar.gz
           tar -xzf kustomize.tar.gz
           chmod u+x ./kustomize
