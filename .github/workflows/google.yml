@@ -96,7 +96,9 @@ jobs:
       - name: 'Build and push Docker container'
         run: |-
           DOCKER_TAG="${GAR_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE}:${GITHUB_SHA}"
-
+          
+          gcloud auth configure-docker "${GAR_LOCATION}-docker.pkg.dev"
+          
           docker build \
             --tag "${DOCKER_TAG}" \
             --build-arg GITHUB_SHA="${GITHUB_SHA}" \
