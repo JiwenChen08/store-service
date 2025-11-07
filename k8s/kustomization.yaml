@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - deployment.yaml   # 里面包含 Deployment 和 Service
+
+images:
+  - name: store-service
+    newName: us-central1-docker.pkg.dev/winged-app-477017-r9/quicklunch/store-service-dev
+    newTag: latest
