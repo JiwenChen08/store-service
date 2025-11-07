@@ -46,7 +46,7 @@ env:
   GKE_ZONE: 'us-central1' # TODO: update to your cluster zone
   DEPLOYMENT_NAME: 'deployment-1' # TODO: update to your deployment name
   REPOSITORY: 'quicklunch' # TODO: update to your Artifact Registry docker repository name
-  IMAGE: 'store-service-dev' # TODO: update to your image name
+  IMAGE: 'store-service' # TODO: update to your image name
   WORKLOAD_IDENTITY_PROVIDER: 'projects/803629722393/locations/global/workloadIdentityPools/quicklunch-dev/providers/github-actions-provider' # TODO: update to your workload identity provider
   SERVICE_ACCOUNT: 'github-804@winged-app-477017-r9.iam.gserviceaccount.com'
   
@@ -110,14 +110,15 @@ jobs:
       # Set up kustomize
       - name: 'Set up Kustomize'
         run: |-
-          curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.4.3/kustomize_v5.4.3_linux_amd64.tar.gz
+          curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.7.1/kustomize_v5.7.1_linux_amd64.tar.gz
+          tar -xzf kustomize.tar.gz
           chmod u+x ./kustomize
 
       # Deploy the Docker image to the GKE cluster
       - name: 'Deploy to GKE'
         run: |-
           # replacing the image name in the k8s template
-          ./kustomize edit set image LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY/IMAGE:TAG=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA
+          ./kustomize edit set image "store-service=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA"
           ./kustomize build . | kubectl apply -f -
           kubectl rollout status deployment/$DEPLOYMENT_NAME
           kubectl get services -o wide
