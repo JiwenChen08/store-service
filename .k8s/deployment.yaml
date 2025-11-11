@@ -17,6 +17,26 @@ spec:
           image: us-central1-docker.pkg.dev/winged-app-477017-r9/quicklunch/store-service-dev:latest
           ports:
             - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10  # 等应用启动
+            periodSeconds: 5
+            timeoutSeconds: 5         # 给 probe 足够时间
+            successThreshold: 1
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          envFrom:
+            - configMapRef:
+                name: store-service-config
 ---
 apiVersion: v1
 kind: Service
@@ -30,3 +50,24 @@ spec:
       port: 8080
       targetPort: 8080
   type: LoadBalancer
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: store-service-configmap
+  labels:
+    app: 'store-service'
+data:
+  DEFAULT_STORE: |
+    {
+      "id": 1024,
+      "name": "Sunshine Cafe",
+      "cityId": 33,
+      "cityName": "Berlin",
+      "lon": "13.4050",
+      "lat": "52.5200",
+      "phone": "+49 30 12345678",
+      "email": "contact@sunshinecafe.de",
+      "address": "Alexanderplatz 5, 10178 Berlin, Germany"
+    }
+  DEFAULT_COUNRTY: Germany
