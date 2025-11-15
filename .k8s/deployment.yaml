@@ -36,7 +36,7 @@ spec:
             failureThreshold: 3
           envFrom:
             - configMapRef:
-                name: store-service-config
+                name: store-service-configmap
 ---
 apiVersion: v1
 kind: Service
