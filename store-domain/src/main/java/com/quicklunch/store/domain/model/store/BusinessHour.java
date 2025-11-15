@@ -1,11 +1,14 @@
 package com.quicklunch.store.domain.model.store;
 
+import lombok.Data;
+
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
-public record BusinessHour(
-        DayOfWeek dayType,
-        LocalTime openTime,
-        LocalTime closeTime
-) {
+@Data
+public class BusinessHour {
+    private Long storeId;
+    private DayOfWeek dayType;
+    private LocalTime openTime;
+    private LocalTime closeTime;
 }

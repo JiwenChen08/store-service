@@ -1,49 +1,45 @@
 package com.quicklunch.store.domain.model.store;
 
-import com.quicklunch.store.domain.model.common.Location;
 import com.quicklunch.store.domain.model.enums.StoreOperatingStatusEnum;
 import com.quicklunch.store.domain.model.enums.StoreStatusEnum;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
-@Setter(AccessLevel.PRIVATE)
+@Setter
 public class Store {
 
     private Long id;
-    private Long storeCode;
+    private String storeNo;
 
     private String name;
 
     private String address;
-
     private String city;
     private String phone;
     private String email;
 
-    private Location location;
+    private String longitude;
+    private String latitude;
 
     private StoreStatusEnum status;
     private StoreOperatingStatusEnum operatingStatus;
 
-    private Map<DayOfWeek, BusinessHour> businessHourMap = new HashMap<>();
-
-
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
 
+    private List<BusinessHour> businessHourList;
 
-    private Store() {
+    public Store() {
 
     }
 
-    public static Store create(String name,
+    public static Store create(String storeNo,
+                               String name,
                                String address,
                                String city,
                                String phone,
@@ -52,20 +48,23 @@ public class Store {
                                String latitude) {
 
         Store store = new Store();
-
+        store.setStoreNo(storeNo);
         store.setName(name);
         store.setAddress(address);
         store.setCity(city);
         store.setPhone(phone);
         store.setEmail(email);
 
-        store.setLocation(new Location(longitude, latitude));
+        store.setLongitude(longitude);
+        store.setLatitude(latitude);
 
         store.setStatus(StoreStatusEnum.CREATED);
         store.setOperatingStatus(StoreOperatingStatusEnum.CLOSE);
 
         store.setCreateAt(LocalDateTime.now());
         store.setUpdateAt(LocalDateTime.now());
+
+        store.setBusinessHourList(new ArrayList<>());
 
         return store;
     }
@@ -93,17 +92,14 @@ public class Store {
         this.operatingStatus = StoreOperatingStatusEnum.CLOSE;
     }
 
-
-    //
-    public void updateBusinessHour(Map<DayOfWeek, BusinessHour> businessHourMap) {
-        if (businessHourMap == null) {
-            return;
-        }
-        this.businessHourMap.putAll(businessHourMap);
+    public void updateBusinessHours(List<BusinessHour> businessHourList) {
+        if (businessHourList == null) return;
+        this.businessHourList = businessHourList;
     }
 
-    public void updateLocation(Location location) {
-        this.location = location;
+    public void updateLocation(String longitude, String latitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
 }
