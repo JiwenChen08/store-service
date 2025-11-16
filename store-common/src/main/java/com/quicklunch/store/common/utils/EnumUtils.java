@@ -20,4 +20,19 @@ public class EnumUtils {
     public static <E extends Enum<E> & BaseEnum<V>, V> V toValue(E enumInstance) {
         return enumInstance == null ? null : enumInstance.getValue();
     }
+
+
+    /**
+     * Enum 转 value
+     */
+    public static <E extends Enum<E> & BaseEnum<V>, V> String toName(E enumInstance) {
+        return enumInstance == null ? null : enumInstance.name();
+    }
+
+    /**
+     * Enum 转 value
+     */
+    public static <E extends Enum<E> & BaseEnum<V>, V> String toDesc(E enumInstance) {
+        return enumInstance == null ? null : enumInstance.getDesc();
+    }
 }

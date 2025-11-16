@@ -1,5 +1,7 @@
 package com.quicklunch.store.service;
 
+import com.quicklunch.store.convert.StoreDTOConvert;
+import com.quicklunch.store.domain.model.store.Store;
 import com.quicklunch.store.domain.repository.StoreRepository;
 import com.quicklunch.store.dto.StoreDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +12,13 @@ public class StoreAppService {
 
     @Autowired
     private StoreRepository storeRepository;
+    @Autowired
+    private StoreDTOConvert storeDTOConvert;
 
 
     public StoreDTO findById(Long storeId) {
-
-        return new StoreDTO();
+        Store store = storeRepository.findById(storeId);
+        return storeDTOConvert.toDTO(store);
     }
 
     public StoreDTO updateById(StoreDTO storeDTO) {

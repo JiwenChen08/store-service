@@ -4,9 +4,9 @@ package com.quicklunch.store.infra.convert;
 import com.quicklunch.store.common.utils.EnumUtils;
 import com.quicklunch.store.domain.model.enums.StoreOperatingStatusEnum;
 import com.quicklunch.store.domain.model.enums.StoreStatusEnum;
-import com.quicklunch.store.domain.model.store.BusinessHour;
+import com.quicklunch.store.domain.model.store.BizHour;
 import com.quicklunch.store.domain.model.store.Store;
-import com.quicklunch.store.infra.persist.po.StoreBusinessHourPO;
+import com.quicklunch.store.infra.persist.po.StoreBizHourPO;
 import com.quicklunch.store.infra.persist.po.StorePO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import java.util.List;
 public class StorePOConvert {
 
     @Autowired
-    private BusinessHourPOConvert businessHourPOConvert;
+    private BizHourPOConvert bizHourPOConvert;
 
     public StorePO toStorePO(Store store) {
         if (store == null) {
@@ -26,8 +26,12 @@ public class StorePOConvert {
         StorePO storePO = new StorePO();
         storePO.setId(store.getId());
         storePO.setName(store.getName());
+
         storePO.setAddress(store.getAddress());
-        storePO.setCity(store.getCity());
+
+
+        storePO.setCityId(store.getCityId());
+        storePO.setCityName(store.getCityName());
         storePO.setPhone(store.getPhone());
         storePO.setEmail(store.getEmail());
 
@@ -45,18 +49,18 @@ public class StorePOConvert {
         return storePO;
     }
 
-    public List<StoreBusinessHourPO> convertBusinessHour(List<BusinessHour> businessHours) {
-        if (businessHours == null) {
+    public List<StoreBizHourPO> toBizHourPO(List<BizHour> bizHours, Long storeId) {
+        if (bizHours == null) {
             return null;
         }
 
-        return businessHours.stream()
-                .map(businessHourPOConvert::toPO)
+        return bizHours.stream()
+                .map(bizHour -> bizHourPOConvert.toPO(bizHour, storeId))
                 .toList();
     }
 
 
-    public Store toDO(StorePO storePO, List<StoreBusinessHourPO> businessHourPOList) {
+    public Store toDO(StorePO storePO, List<StoreBizHourPO> businessHourPOList) {
         if (storePO == null) {
             return null;
         }
@@ -66,7 +70,8 @@ public class StorePOConvert {
         store.setStoreNo(storePO.getStoreNo());
         store.setName(storePO.getName());
         store.setAddress(storePO.getAddress());
-        store.setCity(storePO.getCity());
+        store.setCityId(storePO.getCityId());
+        store.setCityName(storePO.getCityName());
         store.setPhone(storePO.getPhone());
         store.setEmail(storePO.getEmail());
         store.setLongitude(storePO.getLongitude());
@@ -80,11 +85,11 @@ public class StorePOConvert {
         store.setUpdateAt(storePO.getUpdateAt());
 
         if (businessHourPOList != null) {
-            List<BusinessHour> businessHours = businessHourPOList.stream()
-                    .map(businessHourPOConvert::toDO)
+            List<BizHour> bizHours = businessHourPOList.stream()
+                    .map(bizHourPOConvert::toDO)
                     .toList();
 
-            store.setBusinessHourList(businessHours);
+            store.setBizHourList(bizHours);
         }
 
         return store;

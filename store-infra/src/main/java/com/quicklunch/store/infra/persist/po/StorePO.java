@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
-import org.springframework.data.relational.core.sql.In;
 
 import java.time.LocalDateTime;
 
@@ -17,7 +16,9 @@ public class StorePO {
     private String storeNo;
     private String name;
     private String address;
-    private String city;
+    private String postCode;
+    private Long cityId;
+    private String cityName;
     private String phone;
     private String email;
 

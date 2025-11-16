@@ -9,8 +9,9 @@ import java.time.LocalTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StoreBusinessHourDTO {
-    private Integer dayOfWeek;
+public class BizHourDTO {
+    private Integer dayType;
+    private String dayName;
     private LocalTime openTime;
     private LocalTime closeTime;
 }

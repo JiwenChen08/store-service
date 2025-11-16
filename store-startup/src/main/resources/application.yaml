@@ -3,10 +3,14 @@ spring:
     name: store-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/storeservice
+    url: jdbc:postgresql://localhost:5432/store
     username: myuser
     password: mypassword
     driver-class-name: org.postgresql.Driver
+
+  sql:
+    init:
+      mode: always
 
 docker:
   compose:

@@ -6,10 +6,10 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalTime;
 
-@Table("t_store_business_hour")
+@Table("t_store_biz_hour")
 @Getter
 @Setter
-public class StoreBusinessHourPO {
+public class StoreBizHourPO {
     private Long id;
 
     private Long storeId;
