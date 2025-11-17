@@ -37,7 +37,6 @@ public class BizHourPOConvert {
             return null;
         }
         BizHour bizHour = new BizHour();
-        bizHour.setStoreId(bizHourPO.getStoreId());
 
         Integer dayType = bizHourPO.getDayType();
         bizHour.setDayType(EnumUtils.valueOf(DayTypeEnum.class, dayType));

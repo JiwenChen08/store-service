@@ -1,5 +1,9 @@
 package com.quicklunch.store.dto;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -9,14 +13,20 @@ import java.util.List;
 public class StoreDTO {
 
     private Long id;
-    private String storeNo;
-    private String name;
 
+    @NotBlank
+    private String storeNo;
+    @NotBlank
+    private String name;
+    @NotNull
     private String address;
 
     private Long cityId;
+    @NotBlank
     private String cityName;
+    @NotNull
     private String phone;
+    @Email
     private String email;
 
     private String longitude;
@@ -28,6 +38,7 @@ public class StoreDTO {
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
 
-    private List<BizHourDTO> businessHourList;
+    @NotNull
+    private List<@Valid BizHourDTO> bizHourList;
 
 }

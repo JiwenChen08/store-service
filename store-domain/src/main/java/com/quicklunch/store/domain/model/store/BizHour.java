@@ -7,7 +7,6 @@ import java.time.LocalTime;
 
 @Data
 public class BizHour {
-    private Long storeId;
     private DayTypeEnum dayType;
     private LocalTime openTime;
     private LocalTime closeTime;

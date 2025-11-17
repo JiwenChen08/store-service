@@ -38,43 +38,18 @@ public class Store {
     private List<BizHour> bizHourList;
 
     public Store() {
-
     }
 
-//    public static Store create(String storeNo,
-//                               String name,
-//                               String address,
-//                               String city,
-//                               String phone,
-//                               String email,
-//                               String longitude,
-//                               String latitude) {
-//
-//        Store store = new Store();
-//        store.setStoreNo(storeNo);
-//        store.setName(name);
-//        store.setAddress(address);
-//        store.setCityName(city);
-//        store.setPhone(phone);
-//        store.setEmail(email);
-//
-//        store.setLongitude(longitude);
-//        store.setLatitude(latitude);
-//
-//        store.setStatus(StoreStatusEnum.CREATED);
-//        store.setOperatingStatus(StoreOperatingStatusEnum.CLOSE);
-//
-//        store.setCreateAt(LocalDateTime.now());
-//        store.setUpdateAt(LocalDateTime.now());
-//
-//        store.setBizHourList(new ArrayList<>());
-//
-//        return store;
-//    }
+    public void init() {
+        this.status = StoreStatusEnum.CREATED;
+        this.operatingStatus = StoreOperatingStatusEnum.CLOSE;
+        this.createAt = LocalDateTime.now();
+        this.updateAt = LocalDateTime.now();
+    }
 
     // Store Status
     public void pending() {
-        this.status = StoreStatusEnum.OPEN;
+        this.status = StoreStatusEnum.PENDING;
     }
 
     public void open() {

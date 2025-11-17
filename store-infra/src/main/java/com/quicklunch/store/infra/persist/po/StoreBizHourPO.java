@@ -2,6 +2,7 @@ package com.quicklunch.store.infra.persist.po;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalTime;
@@ -10,6 +11,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 public class StoreBizHourPO {
+    @Id
     private Long id;
 
     private Long storeId;

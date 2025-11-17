@@ -26,15 +26,17 @@ public class StoreRepositoryImpl implements StoreRepository {
 
     @Override
     @Transactional
-    public void save(Store store) {
+    public Store save(Store store) {
         StorePO storePO = storePOConvert.toStorePO(store);
 
-        jdbcStoreRepository.save(storePO);
+        StorePO save = jdbcStoreRepository.save(storePO);
+        store.setId(save.getId());
 
         List<StoreBizHourPO> newHourList = storePOConvert.toBizHourPO(store.getBizHourList(), storePO.getId());
         jdbcStoreBizHourRepository.deleteByStoreId(storePO.getId());
         jdbcStoreBizHourRepository.saveAll(newHourList);
 
+        return store;
     }
 
     @Override

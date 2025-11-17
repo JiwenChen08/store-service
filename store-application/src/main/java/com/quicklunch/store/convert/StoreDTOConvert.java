@@ -1,10 +1,13 @@
 package com.quicklunch.store.convert;
 
 import com.quicklunch.store.common.utils.EnumUtils;
+import com.quicklunch.store.domain.model.enums.DayTypeEnum;
 import com.quicklunch.store.domain.model.store.BizHour;
 import com.quicklunch.store.domain.model.store.Store;
 import com.quicklunch.store.dto.BizHourDTO;
+import com.quicklunch.store.dto.NewStoreDTO;
 import com.quicklunch.store.dto.StoreDTO;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -37,7 +40,7 @@ public class StoreDTOConvert {
         storeDTO.setCreateAt(store.getCreateAt());
         storeDTO.setUpdateAt(store.getUpdateAt());
 
-        storeDTO.setBusinessHourList(toBizHourDTOList(store.getBizHourList()));
+        storeDTO.setBizHourList(toBizHourDTOList(store.getBizHourList()));
         return storeDTO;
     }
 
@@ -56,8 +59,39 @@ public class StoreDTOConvert {
                 ).toList();
     }
 
+    public List<BizHour> toBizHourDOList(List<BizHourDTO> bizHourDTOList) {
+        if (bizHourDTOList == null) return null;
+
+        return bizHourDTOList.stream()
+                .map(bizHourDTO -> {
+                    BizHour bizHour = new BizHour();
+
+                    bizHour.setDayType(EnumUtils.valueOf(DayTypeEnum.class, bizHourDTO.getDayType()));
+                    bizHour.setOpenTime(bizHourDTO.getOpenTime());
+                    bizHour.setCloseTime(bizHourDTO.getCloseTime());
+
+                    return bizHour;
+                }).toList();
+    }
+
     public Store toDO(StoreDTO storeDTO) {
         return null;
+    }
+
+
+    public Store fromNewStoreDTO(NewStoreDTO newStoreDTO, String storeNo) {
+        Store store = new Store();
+
+        store.setStoreNo(storeNo);
+        store.setName(newStoreDTO.getName());
+        store.setAddress(newStoreDTO.getAddress());
+        store.setCityName(newStoreDTO.getCityName());
+        store.setPhone(newStoreDTO.getPhone());
+        store.setEmail(newStoreDTO.getEmail());
+
+        List<BizHour> bizHourDOList = toBizHourDOList(newStoreDTO.getBizHourList());
+        store.setBizHourList(bizHourDOList);
+        return store;
     }
 
 }

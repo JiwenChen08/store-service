@@ -1,18 +1,18 @@
 package com.quicklunch.store.controller;
 
-import com.quicklunch.store.dto.StoreBizHourDTO;
-import com.quicklunch.store.dto.StoreDTO;
-import com.quicklunch.store.dto.StoreOperatingStatusDTO;
-import com.quicklunch.store.dto.StoreStatusDTO;
+import com.quicklunch.store.dto.*;
 import com.quicklunch.store.service.StoreAppService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-@Controller
-@ResponseBody
+import java.net.URI;
+
+@RestController
 @RequestMapping("/stores")
 public class StoreController {
 
@@ -22,23 +22,28 @@ public class StoreController {
     @GetMapping("/{storeId}")
     public ResponseEntity<StoreDTO> view(@PathVariable("storeId") Long storeId) {
         StoreDTO storeDTO = storeAppService.findById(storeId);
-        if (storeDTO == null) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(storeDTO);
     }
 
 
-    @PostMapping
-    public ResponseEntity<StoreDTO> create(@RequestBody StoreDTO storeDTO) {
+    @PostMapping("/")
+    public ResponseEntity<StoreDTO> create(@Valid @RequestBody NewStoreDTO newStoreDTO) {
 
+        StoreDTO storeDTO = storeAppService.create(newStoreDTO);
 
-        return null;
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()       // 当前请求 /stores
+                .path("/{id}")              // 拼接 /{id}
+                .buildAndExpand(storeDTO.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(storeDTO);
     }
 
     @PatchMapping("/{storeId}")
     public ResponseEntity<StoreDTO> update(@PathVariable("storeId") Long storeId,
                                            @Validated @RequestBody StoreDTO storeDTO) {
+
 
         return null;
     }
@@ -58,7 +63,7 @@ public class StoreController {
 
     @PatchMapping("/{storeId}/biz_hours")
     public ResponseEntity<StoreBizHourDTO> updateStoreBizHours(@PathVariable("storeId") Long storeId,
-                                                 @RequestBody StoreBizHourDTO storeBizHourDTO) {
+                                                               @RequestBody StoreBizHourDTO storeBizHourDTO) {
         return null;
     }
 
