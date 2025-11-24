@@ -22,7 +22,7 @@ public class StoreController {
 
     @GetMapping
     public ResponseEntity<PageDTO<StoreDTO>> list(StoreQueryDTO queryDTO) {
-        PageDTO<StoreDTO> all = storeAppService.findAll(queryDTO);
+        PageDTO<StoreDTO> all = storeAppService.list(queryDTO);
         return ResponseEntity.ok(all);
     }
 

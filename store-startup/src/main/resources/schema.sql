@@ -59,7 +59,9 @@ create table t_store_biz_hour
     day_type   integer not null,
     day_name   varchar(20),
     open_time  time,
-    close_time time
+    close_time time,
+    create_at  timestamp with time zone default CURRENT_TIMESTAMP,
+    update_at  timestamp with time zone default CURRENT_TIMESTAMP
 );
 
 comment on table t_store_biz_hour is '门店营业时间表';
@@ -75,4 +77,9 @@ comment on column t_store_biz_hour.day_name is '星期名称';
 comment on column t_store_biz_hour.open_time is '营业开始时间';
 
 comment on column t_store_biz_hour.close_time is '营业结束时间';
+
+comment on column t_store_biz_hour.create_at is '创建时间';
+
+comment on column t_store_biz_hour.update_at is '更新时间';
+
 

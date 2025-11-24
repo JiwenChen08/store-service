@@ -122,7 +122,28 @@ public class StoreControllerTest {
 
     }
 
+    @Test
+    public void testUpdateStatus() throws Exception {
 
+        Long storeId = 1L;
+        Integer status = 2;
+        Integer opStatus = 2;
+
+        mockMvc.perform(put("/stores/{storeId}", storeId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(""" 
+                                    {
+                                        "status": %s,
+                                        "operatingStatus": %s
+                                    }
+                                    """.formatted(status, opStatus)
+                        ))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value(status))
+                .andExpect(jsonPath("$.operatingStatus").value(opStatus));
+
+    }
 
 
 }
