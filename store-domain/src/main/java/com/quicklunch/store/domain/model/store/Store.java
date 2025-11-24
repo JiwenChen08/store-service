@@ -18,7 +18,6 @@ public class Store {
     private String name;
 
     private String address;
-    private String postCode;
 
     private Long cityId;
     private String cityName;
@@ -60,24 +59,5 @@ public class Store {
         this.status = StoreStatusEnum.CLOSE;
     }
 
-
-    // Store Operating Status
-    public void operatingOpen() {
-        this.operatingStatus = StoreOperatingStatusEnum.OPEN;
-    }
-
-    public void operatingClose() {
-        this.operatingStatus = StoreOperatingStatusEnum.CLOSE;
-    }
-
-    public void updateBusinessHours(List<BizHour> bizHourList) {
-        if (bizHourList == null) return;
-        this.bizHourList = bizHourList;
-    }
-
-    public void updateLocation(String longitude, String latitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
 
 }

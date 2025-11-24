@@ -1,4 +1,4 @@
-package com.quicklunch.store.dto;
+package com.quicklunch.store.dto.store;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;

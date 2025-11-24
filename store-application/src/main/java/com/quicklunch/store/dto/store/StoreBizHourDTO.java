@@ -1,4 +1,4 @@
-package com.quicklunch.store.dto;
+package com.quicklunch.store.dto.store;
 
 import java.util.List;
 

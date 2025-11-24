@@ -3,8 +3,10 @@ package com.quicklunch.store.service;
 import com.quicklunch.store.convert.StoreDTOConvert;
 import com.quicklunch.store.domain.model.store.Store;
 import com.quicklunch.store.domain.repository.StoreRepository;
-import com.quicklunch.store.dto.NewStoreDTO;
-import com.quicklunch.store.dto.StoreDTO;
+import com.quicklunch.store.dto.page.PageDTO;
+import com.quicklunch.store.dto.store.NewStoreDTO;
+import com.quicklunch.store.dto.store.StoreDTO;
+import com.quicklunch.store.dto.store.StoreQueryDTO;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,13 @@ public class StoreAppService {
     private StoreRepository storeRepository;
     @Autowired
     private StoreDTOConvert storeDTOConvert;
+
+
+    public PageDTO<StoreDTO> list(StoreQueryDTO queryDTO) {
+
+
+        return null;
+    }
 
 
     public StoreDTO findById(Long storeId) {
@@ -47,17 +56,16 @@ public class StoreAppService {
 
     public StoreDTO updateById(StoreDTO storeDTO) {
 
-        return new StoreDTO();
+        Long id = storeDTO.getId();
+
+        Store store = storeRepository.findById(id);
+        if (store == null) {
+            throw new NoSuchElementException();
+        }
+
+        storeDTOConvert.updateFields(store, storeDTO);
+        Store save = storeRepository.save(store);
+        return  storeDTOConvert.toDTO(save);
     }
-
-    public StoreDTO updateStatus(Long storeId, Integer status) {
-
-        return null;
-    }
-
-    public StoreDTO updateOperatingStatus(Long storeId, Integer operating) {
-        return null;
-    }
-
 
 }

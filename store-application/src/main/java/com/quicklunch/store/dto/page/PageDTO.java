@@ -1,4 +1,4 @@
-package com.quicklunch.store.dto;
+package com.quicklunch.store.dto.page;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PageDTO<T> {
-    private Long page;
-    private Long size;
+    private Long total;
     private T data;
 }

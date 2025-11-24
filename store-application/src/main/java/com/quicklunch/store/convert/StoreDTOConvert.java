@@ -1,13 +1,15 @@
 package com.quicklunch.store.convert;
 
 import com.quicklunch.store.common.utils.EnumUtils;
+import com.quicklunch.store.common.utils.SetterUtils;
 import com.quicklunch.store.domain.model.enums.DayTypeEnum;
+import com.quicklunch.store.domain.model.enums.StoreOperatingStatusEnum;
+import com.quicklunch.store.domain.model.enums.StoreStatusEnum;
 import com.quicklunch.store.domain.model.store.BizHour;
 import com.quicklunch.store.domain.model.store.Store;
-import com.quicklunch.store.dto.BizHourDTO;
-import com.quicklunch.store.dto.NewStoreDTO;
-import com.quicklunch.store.dto.StoreDTO;
-import jakarta.validation.Valid;
+import com.quicklunch.store.dto.store.BizHourDTO;
+import com.quicklunch.store.dto.store.NewStoreDTO;
+import com.quicklunch.store.dto.store.StoreDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -74,10 +76,6 @@ public class StoreDTOConvert {
                 }).toList();
     }
 
-    public Store toDO(StoreDTO storeDTO) {
-        return null;
-    }
-
 
     public Store fromNewStoreDTO(NewStoreDTO newStoreDTO, String storeNo) {
         Store store = new Store();
@@ -94,4 +92,30 @@ public class StoreDTOConvert {
         return store;
     }
 
+
+    public void updateFields(Store store, StoreDTO storeDTO) {
+
+        SetterUtils.setIfPresent(storeDTO.getStoreNo(), store::setStoreNo);
+        SetterUtils.setIfPresent(storeDTO.getName(), store::setName);
+        SetterUtils.setIfPresent(storeDTO.getAddress(), store::setAddress);
+        SetterUtils.setIfPresent(storeDTO.getCityId(), store::setCityId);
+        SetterUtils.setIfPresent(storeDTO.getCityName(), store::setCityName);
+        SetterUtils.setIfPresent(storeDTO.getPhone(), store::setPhone);
+        SetterUtils.setIfPresent(storeDTO.getEmail(), store::setEmail);
+        SetterUtils.setIfPresent(storeDTO.getLongitude(), store::setLongitude);
+        SetterUtils.setIfPresent(storeDTO.getLatitude(), store::setLatitude);
+
+        SetterUtils.setIfPresent(storeDTO.getStatus(), status -> {
+            store.setStatus(EnumUtils.valueOf(StoreStatusEnum.class, status));
+        });
+
+        SetterUtils.setIfPresent(storeDTO.getOperatingStatus(), opStatus -> {
+            store.setOperatingStatus(EnumUtils.valueOf(StoreOperatingStatusEnum.class, opStatus));
+        });
+
+        SetterUtils.setIfPresent(storeDTO.getBizHourList(), list -> {
+            store.setBizHourList(toBizHourDOList(list));
+        });
+
+    }
 }

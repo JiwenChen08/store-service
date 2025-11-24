@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Table("t_store_biz_hour")
@@ -21,4 +22,7 @@ public class StoreBizHourPO {
 
     private LocalTime openTime;
     private LocalTime closeTime;
+
+    private LocalDateTime createAt;
+    private LocalDateTime updateAt;
 }

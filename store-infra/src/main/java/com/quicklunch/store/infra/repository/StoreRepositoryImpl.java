@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Component
@@ -27,16 +28,68 @@ public class StoreRepositoryImpl implements StoreRepository {
     @Override
     @Transactional
     public Store save(Store store) {
-        StorePO storePO = storePOConvert.toStorePO(store);
 
-        StorePO save = jdbcStoreRepository.save(storePO);
-        store.setId(save.getId());
+        StorePO saved = jdbcStoreRepository.save(storePOConvert.toStorePO(store));
 
-        List<StoreBizHourPO> newHourList = storePOConvert.toBizHourPO(store.getBizHourList(), storePO.getId());
-        jdbcStoreBizHourRepository.deleteByStoreId(storePO.getId());
-        jdbcStoreBizHourRepository.saveAll(newHourList);
+        Long storeId = saved.getId();
 
-        return store;
+        List<StoreBizHourPO> newHourList = storePOConvert.toBizHourPO(store.getBizHourList(), storeId);
+        List<StoreBizHourPO> oldHourList = jdbcStoreBizHourRepository.findListByStoreId(storeId);
+        updateBizHourList(newHourList, oldHourList);
+
+        List<StoreBizHourPO> savedBizHourPOList = jdbcStoreBizHourRepository.findListByStoreId(saved.getId());
+        return storePOConvert.toDO(saved, savedBizHourPOList);
+    }
+
+    private void updateBizHourList(List<StoreBizHourPO> newHourList, List<StoreBizHourPO> oldHourList) {
+        Set<Integer> dayTypeSet = new HashSet<>();
+        Map<Integer, StoreBizHourPO> oldMap = new HashMap<>();
+        Map<Integer, StoreBizHourPO> newMap = new HashMap<>();
+
+        for (StoreBizHourPO newPO : newHourList) {
+            dayTypeSet.add(newPO.getDayType());
+            newMap.put(newPO.getDayType(), newPO);
+        }
+        for (StoreBizHourPO oldPO : oldHourList) {
+            dayTypeSet.add(oldPO.getDayType());
+            oldMap.put(oldPO.getDayType(), oldPO);
+        }
+
+        List<StoreBizHourPO> updateList = new ArrayList<>();
+        List<StoreBizHourPO> addList = new ArrayList<>();
+        List<Long> deleteIdList = new ArrayList<>();
+
+        for (Integer dayType : dayTypeSet) {
+
+            StoreBizHourPO oldPO = oldMap.get(dayType);
+            StoreBizHourPO newPO = newMap.get(dayType);
+
+            if (newPO == null && oldPO != null) {
+                // delete
+                deleteIdList.add(oldPO.getId());
+            } else if (newPO != null && oldPO == null) {
+                // add
+                newPO.setCreateAt(LocalDateTime.now());
+                newPO.setUpdateAt(LocalDateTime.now());
+                addList.add(newPO);
+            } else if (newPO != null && oldPO != null) {
+                // update
+                oldPO.setOpenTime(newPO.getOpenTime());
+                oldPO.setCloseTime(newPO.getCloseTime());
+                oldPO.setUpdateAt(LocalDateTime.now());
+                updateList.add(oldPO);
+            }
+        }
+
+        if (!updateList.isEmpty()) {
+            jdbcStoreBizHourRepository.saveAll(updateList);
+        }
+        if (!addList.isEmpty()) {
+            jdbcStoreBizHourRepository.saveAll(addList);
+        }
+        if (!deleteIdList.isEmpty()) {
+            jdbcStoreBizHourRepository.deleteAllById(deleteIdList);
+        }
     }
 
     @Override
@@ -51,16 +104,6 @@ public class StoreRepositoryImpl implements StoreRepository {
         List<StoreBizHourPO> bHPOList = jdbcStoreBizHourRepository.findListByStoreId(id);
 
         return storePOConvert.toDO(storePO, bHPOList);
-    }
-
-    @Override
-    public void updateStatus(Long id, Integer status) {
-
-    }
-
-    @Override
-    public void updateOperatingStatus(Long id, Integer operatingStatus) {
-
     }
 
 }

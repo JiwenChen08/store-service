@@ -7,8 +7,4 @@ public interface StoreRepository {
     Store save(Store store);
 
     Store findById(Long id);
-
-    void updateStatus(Long id, Integer status);
-
-    void updateOperatingStatus(Long id, Integer operatingStatus);
 }
